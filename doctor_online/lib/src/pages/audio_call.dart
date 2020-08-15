@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:doctorapp/Controllers/ChatController.dart';
 import 'package:doctorapp/src/utils/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -188,12 +189,19 @@ class _VoiceCallPageState extends State<VoiceCallPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   FunctionalButton(
-                    title: 'Speaker',
-                    icon: Icons.phone_in_talk,
-                    onPressed: () {},
+                    title: 'End Call',
+                    icon:  Icons.call_end,
+                    iconColor: Colors.red,
+                    onPressed: ()
+                    {
+                      ChatController().deleteActiveCall(widget.channelName, 'audiocall');
+                      Navigator.pop(context);
+                    },
+
                   ),
                   FunctionalButton(
                     title: 'Mute',
+                    iconColor: Colors.deepPurpleAccent,
                     icon:  muted ? Icons.mic_off : Icons.mic,
                     onPressed: ()
                     {
@@ -208,19 +216,7 @@ class _VoiceCallPageState extends State<VoiceCallPage> {
               SizedBox(
                 height: 120.0,
               ),
-              FloatingActionButton(
-                onPressed: (){
 
-                  Navigator.pop(context);},
-                elevation: 20.0,
-                shape: CircleBorder(side: BorderSide(color: Colors.red)),
-                mini: false,
-                child: Icon(
-                  Icons.call_end,
-                  color: Colors.red,
-                ),
-                backgroundColor: Colors.red[100],
-              )
             ],
           ),
         ),
@@ -232,9 +228,10 @@ class _VoiceCallPageState extends State<VoiceCallPage> {
 class FunctionalButton extends StatefulWidget {
   final title;
   final icon;
+  final iconColor;
   final Function() onPressed;
 
-  const FunctionalButton({Key key, this.title, this.icon, this.onPressed})
+  const FunctionalButton({Key key, this.title, this.icon, this.onPressed, this.iconColor})
       : super(key: key);
 
   @override
@@ -260,7 +257,7 @@ class _FunctionalButtonState extends State<FunctionalButton> {
             child: Icon(
               widget.icon,
               size: 30.0,
-              color: Colors.deepPurpleAccent,
+              color: widget.iconColor,
             ),
           ),
         ),
@@ -268,7 +265,7 @@ class _FunctionalButtonState extends State<FunctionalButton> {
           margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
           child: Text(
             widget.title,
-            style: TextStyle(fontSize: 15.0, color: Colors.deepPurpleAccent),
+            style: TextStyle(fontSize: 15.0, color: widget.iconColor),
           ),
         )
       ],

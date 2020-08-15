@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:doctorapp/Controllers/ChatController.dart';
 import 'package:flutter/material.dart';
 
+import '../../Chat_Screen.dart';
 import '../utils/settings.dart';
 
 class CallPage extends StatefulWidget {
@@ -292,6 +294,7 @@ class _CallPageState extends State<CallPage> {
   void _onCallEnd(BuildContext context) {
 
     Navigator.pop(context);
+    ChatController().deleteActiveCall(widget.channelName, 'videocall');
   }
 
   void _onToggleMute() {

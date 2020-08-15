@@ -119,7 +119,6 @@ class ChatController {
           'image');
     },
     );
-
  }
   Future<bool> isAnyCall(String receiverUID,String type)async {
     LoginController controller = new LoginController();

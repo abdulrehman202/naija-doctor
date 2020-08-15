@@ -25,7 +25,7 @@ import 'Controllers/ChatController.dart';
 import 'src/pages/audio_call.dart';
 
 DoctorAppointments apt;
-bool receive;
+bool audio_call;
 
 Future<void> getUID()
 async {
@@ -47,7 +47,7 @@ class ChatScreen extends StatelessWidget {
     receiver_name = name;
     receiver_pic = picURL;
     channel_id = TextEditingController();
-    receive = false;
+//    audio_call = false;
   }
 
   @override
@@ -109,90 +109,220 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
 
     return new  Scaffold(
 
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.keyboard_backspace),
-                onPressed: ()
-                {
-                  Navigator.pop(context);
-                },
-              ),
-              title: Row(
-                children: <Widget>[
-                  /*GestureDetector(
-                child: Container(
-                  child: Icon(Icons.arrow_back, color: myColors.appBarIcons),
-                  alignment: Alignment.topLeft,
+//            appBar: AppBar(
+//              leading: IconButton(
+//                icon: Icon(Icons.arrow_back),
+//                onPressed: ()
+//                {
+//                  _navigateToBackScreen(context);
+//                },
+//              ),
+//              title: Row(
+//                children: <Widget>[
+//                  /*GestureDetector(
+//                child: Container(
+//                  child: Icon(Icons.arrow_back, color: myColors.appBarIcons),
+//                  alignment: Alignment.topLeft,
+//                  width: 40,
+//                ),
+//                onTap: () {
+//                  _navigateToBackScreen(context);
+//                },
+//              ),*/
+//                  GestureDetector(
+//                    child: ClipOval(
+//                      //borderRadius: BorderRadius.circular(100.0),
+//                      child: Image.network(
+//                        receiver_pic,
+//                        width: 40,
+//                        height: 40,
+//                        fit: BoxFit.fitWidth,
+//                      ),
+//                    ),
+//                  ),
+//
+//                  Flexible(
+//                    child: Container(
+//                      margin: EdgeInsets.only(left: 10),
+//                      child: Text(
+//                        receiver_name,
+//                        style: TextStyle(
+//                          fontFamily: 'Oxygen',
+//                          fontSize: 19,
+//                          color: myColors.appBarIcons,
+//                          fontWeight: FontWeight.w700,
+//                        ),
+//                        textAlign: TextAlign.left,
+//                      ),
+//                    ),
+//                  ),
+//
+//                ],
+//              ),
+//              automaticallyImplyLeading: true,
+//              actions: <Widget>[
+//                IconButton(
+//                  icon: Icon(
+//                    Icons.phone,
+//                    size: 24,
+//                  ),
+//                  color: myColors.appBarIcons,
+//                  onPressed: _doAudioCall,
+//                ),
+//                IconButton(
+//                  icon: Icon(
+//                    Icons.videocam,
+//                    size: 24,
+//                  ),
+//                  color: myColors.appBarIcons,
+//                  onPressed:_doVideoCall,
+////
+////                    !receive ? ChatController().sendMessage(uid, receiver, 'videocall'): {},
+//
+////                    onJoin();
+////                  }
+//                ),
+//                FlatButton(
+//                  child: Text('Join Call',
+//                  style: TextStyle(color: myColors.appBarIcons,) ),
+////                  color: myColors.appBarIcons,
+//                  onPressed:()
+//
+//                  async {
+//                    if((await ChatController().isAnyCall(receiver, 'videocall') == true))
+//                      {
+//                       ChatController().deleteActiveCall(receiver, 'videocall');
+//                       onJoin();
+//                      }
+//
+//                    else if((await ChatController().isAnyCall(receiver, 'audiocall')==true))
+//                      {
+//                        ChatController().deleteActiveCall(receiver, 'audiocall');
+//                        onJoinAudioCall();
+//                      }
+//
+//                    else
+//                      {
+//                        Fluttertoast.showToast(
+//                          msg: "You dont have any call to join",
+//                          toastLength: Toast.LENGTH_SHORT,
+//                          gravity: ToastGravity.CENTER,
+//                          timeInSecForIosWeb: 1,
+//                          textColor: Colors.white,
+//                          fontSize: 12.0,
+//                          backgroundColor: Colors.black54,
+//                        );
+//                      }
+//                  }
+//                ),
+//              ],
+//            ),
+      appBar: AppBar(
+        titleSpacing: 0,
+        leading: Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          width: 15,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back, size: 20),
+            onPressed: () {
+              _navigateToBackScreen(context);
+            },
+          ),
+        ),
+        title: Row(
+          children: <Widget>[
+            GestureDetector(
+              child: ClipOval(
+                //borderRadius: BorderRadius.circular(100.0),
+                child: Image.network(
+                  receiver_pic,
                   width: 40,
+                  height: 40,
+                  fit: BoxFit.fitWidth,
                 ),
-                onTap: () {
-                  _navigateToBackScreen(context);
-                },
-              ),*/
-                  GestureDetector(
-                    child: ClipOval(
-                      //borderRadius: BorderRadius.circular(100.0),
-                      child: Image.network(
-                        receiver_pic,
-                        width: 40,
-                        height: 40,
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
-                  ),
-
-                  Flexible(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: Text(
-                        receiver_name,
-                        style: TextStyle(
-                          fontFamily: 'Oxygen',
-                          fontSize: 19,
-                          color: myColors.appBarIcons,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ),
-
-                ],
               ),
-              automaticallyImplyLeading: true,
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.phone,
-                    size: 24,
+            ),
+            Flexible(
+              child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Text(
+                  receiver_name,
+                  style: TextStyle(
+                    fontFamily: 'Oxygen',
+                    fontSize: 17,
+                    color: myColors.appBarIcons,
+                    fontWeight: FontWeight.w700,
                   ),
-                  color: myColors.appBarIcons,
-                  onPressed: _joinAudioCall,
+                  textAlign: TextAlign.left,
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.videocam,
-                    size: 24,
-                  ),
-                  color: myColors.appBarIcons,
-                  onPressed:_joinVideoCall,
+              ),
+            ),
+          ],
+        ),
+        automaticallyImplyLeading: true,
+        actions: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            margin: EdgeInsets.fromLTRB(0, 0, 18, 0),
+            width: 20,
+            child: IconButton(
+              icon: Icon(
+                Icons.phone,
+                size: 22,
+              ),
+              color: myColors.appBarIcons,
+              onPressed: _doAudioCall,
+            ),
+          ),
+          Container(
+            width: 22,
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            margin: EdgeInsets.fromLTRB(0, 0, 4, 0),
+            child: IconButton(
+              icon: Icon(
+                Icons.videocam,
+                size: 22,
+              ),
+              color: myColors.appBarIcons,
+              onPressed: _doVideoCall,
 //
 //                    !receive ? ChatController().sendMessage(uid, receiver, 'videocall'): {},
 
 //                    onJoin();
 //                  }
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.more_vert,
-                    size: 24,
-                  ),
-                  color: myColors.appBarIcons,
-//                  onPressed:,
-//                  onJoin,
-                ),
-              ],
             ),
+          ),
+          FlatButton(
+              child: Text('Join Call',
+                  style: TextStyle(
+                    color: myColors.appBarIcons,
+                  )),
+//                  color: myColors.appBarIcons,
+              onPressed: () async {
+                if ((await ChatController().isAnyCall(receiver, 'videocall') ==
+                    true)) {
+                  ChatController().deleteActiveCall(receiver, 'videocall');
+                  onJoin();
+                } else if ((await ChatController()
+                    .isAnyCall(receiver, 'audiocall') ==
+                    true)) {
+                  ChatController().deleteActiveCall(receiver, 'audiocall');
+                  onJoinAudioCall();
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "You dont have any call to join",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    textColor: Colors.white,
+                    fontSize: 12.0,
+                    backgroundColor: Colors.black54,
+                  );
+                }
+              }),
+        ],
+      ),
             resizeToAvoidBottomPadding: false,
             backgroundColor: const Color(0xffffffff),
             body:
@@ -204,31 +334,10 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     MessageStream(),
-                    BottomAppBar(
-                        color: Color(0xfffffffc),
-                        child: Container(
+                    Container(
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                           child: Row(
                             children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.fromLTRB(7, 0, 0, 2),
-                                padding: EdgeInsets.all(0),
-                                width: 30.0,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.attach_file,
-                                    size: 22,
-                                  ),
-                                  color: myColors.bottomBarIcons,
-                                  onPressed: () async {
-                                    print('attach');
-                                    List<File> files = await FilePicker.getMultiFile(
-                                      type: FileType.custom,
-                                      allowedExtensions: [ 'pdf', 'doc'],
-                                    ).then((value) {} );
-                                  },
-                                ),
-                              ),
                               Container(
                                 padding: EdgeInsets.all(0),
                                 width: 30.0,
@@ -264,20 +373,6 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                                     });
 
 
-                                  },
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(0),
-                                width: 30.0,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.mic,
-                                    size: 24,
-                                  ),
-                                  color: myColors.bottomBarIcons,
-                                  onPressed: (){
-                                    print('mic');
                                   },
                                 ),
                               ),
@@ -322,7 +417,6 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                                             ),
                                             maxLines: null,
                                             keyboardType: TextInputType.text,
-
                                           ),
                                         ),
                                       ),
@@ -331,7 +425,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                                margin: EdgeInsets.fromLTRB(0, 0, 25, 0),
                                 padding: EdgeInsets.all(0),
                                 width: 20.0,
                                 child: IconButton(
@@ -339,7 +433,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                                     Icons.send,
                                     size: 24,
                                   ),
-                                  color: myColors.appBar,
+                                  color:  Color(0xFF4E45FF),
                                   onPressed:()
                                   {
                                     sendMessage(msgController.text.toString());
@@ -350,7 +444,6 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                             ],
                           ),
                         ),
-                      ),
                     Visibility(
                       visible: false,
                       child: TextField(
@@ -368,11 +461,11 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
     // update input validation
     setState(()
     {
-     receive ? channel_id.text = receiver : channel_id.text = uid;
+//     receive ? channel_id.text = receiver : channel_id.text = uid;
     }
 
     );
-    if (channel_id.text.isNotEmpty) {
+
       await _handleCameraAndMic();
 
       await Navigator.push(
@@ -380,20 +473,19 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
         MaterialPageRoute(
           builder: (context) => CallPage(
             channelName: channel_id.text,
+//            audio_call ? receiver : uid,
             role: _role,
           ),
         ),
       );
-     }
     }
 
   Future<void> onJoinAudioCall() async {
 
     // update input validation
     setState(() {
-      receive ? channel_id.text = receiver : channel_id.text = uid;
+//      receive ? channel_id.text = receiver : channel_id.text = uid;
     });
-    if (channel_id.text.isNotEmpty) {
       // await for camera and mic permissions before pushing video page
       await _handleMic();
       // push video page with given channel name
@@ -402,15 +494,13 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
         MaterialPageRoute(
           builder: (context) => VoiceCallPage(
             channelName: channel_id.text,
+//            audio_call ? receiver : uid,
             role: _role,
             name: receiver_name,
             photo: receiver_pic,
           ),
         ),
       );
-
-      ChatController().deleteActiveCall(receiver, 'audiocall');
-    }
   }
 
   Future<void> _handleCameraAndMic() async {
@@ -431,45 +521,38 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
     chatController.sendMessage(text,receiver,'text');
   }
 
-  Future<void> _joinVideoCall() async {
+  Future<void> _doVideoCall() async {
 
+    channel_id.text = uid;
 
-    if((await ChatController().isAnyCall(receiver, 'videocall')) == false)
-    {
-      receive = false;
+//    if(audio_call == false)
+//    {
       ChatController().sendMessage(uid,receiver, 'videocall');
-    }
-
-    else
-      {
-        receive = true;
-      }
+//    }
 
     onJoin();
-    ChatController().deleteActiveCall(receiver, 'videocall');
-
+//    ChatController().deleteActiveCall(receiver, 'videocall');
+//    audio_call = false;
   }
 
-  void _joinAudioCall() async {
+  void _doAudioCall() async {
 
-    if((await ChatController().isAnyCall(receiver, 'audiocall')) == false)
-    {
-    receive = false;
-    ChatController().sendMessage(uid,receiver, 'audiocall');
-    }
-
-    else
-    {
-    receive = true;
-    }
+    channel_id.text=uid;
+//    if(audio_call == false)
+//    {
+    ChatController().sendMessage(uid, receiver,'audiocall');
+//    }
 
     onJoinAudioCall();
-    ChatController().deleteActiveCall(receiver, 'audiocall');
+//    ChatController().deleteActiveCall(receiver, 'audiocall');
+//    audio_call = false;
   }
 }
 
 void _navigateToBackScreen(BuildContext context) {
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+//  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+  Navigator.pop(context);
+
 }
 
 class MessageBubble extends StatelessWidget{
@@ -594,14 +677,14 @@ class MessageStream extends StatelessWidget{
             print('Receiver id: ${receiver.toString()}');
             print(msgType.toString());
 
-            channel_id.text = uid;
+//            channel_id.text = uid;
 
              if(msgType == 'audiocall' || msgType=='videocall')
             {
               if(msgSender!=uemail)
               {
                 Fluttertoast.showToast(
-                  msg: "You have an incoming ${msgType}. Tap on ${msgType} icon at top to join",
+                  msg: "You have an incoming ${msgType}. Tap 'Join Call' at top to join",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER,
                   timeInSecForIosWeb: 1,
@@ -609,6 +692,8 @@ class MessageStream extends StatelessWidget{
                   fontSize: 12.0,
                   backgroundColor: Colors.black54,
                 );
+//                audio_call = true;
+              channel_id.text = msgText;
               }
             }
 

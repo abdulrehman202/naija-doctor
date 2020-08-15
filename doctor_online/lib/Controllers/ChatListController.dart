@@ -1,3 +1,5 @@
+
+
 import 'package:doctorapp/Classes/DoctorAppointments.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -55,5 +57,19 @@ class ChatListController {
     } catch (e) {
       print(e);
     }
+  }
+  Future<String> getUserPic()
+  async {
+    var profile_pic;
+
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('${user.uid}/profile');
+
+    await storageReference.getDownloadURL().then((fileURL) {
+      profile_pic = fileURL;
+    });
+
+    return profile_pic;
   }
 }

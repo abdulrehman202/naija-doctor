@@ -103,6 +103,7 @@ class _Login extends State<Login> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+
                       autofocus: true,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) =>
@@ -120,6 +121,7 @@ class _Login extends State<Login> {
                       ),
                       onSaved: (input) => _email = input,
                       textAlign: TextAlign.left,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10),

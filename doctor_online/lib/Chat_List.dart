@@ -9,6 +9,16 @@ import 'package:doctorapp/main.dart';
 
 import 'Chat_Screen.dart';
 
+
+List<DoctorAppointments> apt;
+
+var user_pic;
+
+Future<void> getPic()
+async {
+  user_pic = await ChatListController().getUserPic();
+}
+
 class ChatList extends StatelessWidget {
   // DoctorAppointments obj;
   // ChatList(this.obj);
@@ -17,7 +27,7 @@ class ChatList extends StatelessWidget {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
-        //'/signup': (BuildContext context) => new SignupPage(),
+//        '/chatscreen': (BuildContext context) => new ChatScreen(id, name, photo),
       },
         theme: ThemeData(
           primaryColor:
@@ -33,6 +43,12 @@ class ChatList extends StatelessWidget {
 class ChatListPage extends StatefulWidget {
   // DoctorAppointments obj;
   // ChatListPage(this.obj);
+
+  ChatListPage()
+  {
+    getPic();
+  }
+
   @override
   _ChatListPageState createState() => new _ChatListPageState();
 }
@@ -50,7 +66,12 @@ class _ChatListPageState extends State<ChatListPage> {
   ];
   Timer timer;
 
-  List<DoctorAppointments> apt;
+  _ChatListPageState()
+  {
+    getPic();
+  }
+
+//  List<DoctorAppointments> apt;
   ValueNotifier<bool> _isSearchFetched = ValueNotifier(false);
   void setStateOfList(List<DoctorAppointments> myList) {
     setState(() {
@@ -91,12 +112,15 @@ Timer t;
             GestureDetector(
               child: ClipOval(
                 //borderRadius: BorderRadius.circular(100.0),
-                child: Image.asset(
-                  'images/man_pic.jpg',
+                child:user_pic != null ? Image.network(
+                  user_pic,
                   width: 40,
                   height: 40,
                   fit: BoxFit.fitWidth,
-                ),
+                ) : Image.asset('images/dr.jpeg',
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.fitWidth,),
               ),
             ),
             Container(
@@ -284,6 +308,7 @@ Timer t;
                                   ),
                                   onTap: () {
                                     print(title.patientId);
+//                                    Navigator.of(context).push('/chatscreen');
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
